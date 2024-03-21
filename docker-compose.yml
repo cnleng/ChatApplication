@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  chat-services:
+    image: chat-services:latest
+    container_name: 'chat-services'
+    build:
+      context: ./chat-services  # path to the chat-services directory
+    ports:
+      - 8080:8080
+    networks:
+        - micro_network
+    depends_on:
+      - postgresdb
+      - rabbitmq
+
+  user-services:
+    image: user-services:latest
+    container_name: 'user-services'
+    build:
+      context: ./user-services  # path to the user-services directory
+    ports:
+      - 8081:8081
+    networks:
+        - micro_network
+    depends_on:
+      - chat-services
+
+networks:
+  micro_network:
