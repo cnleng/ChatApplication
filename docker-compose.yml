@@ -1,30 +1,64 @@
 version: "3.9"
 
 services:
-  chat-services:
-    image: chat-services:latest
-    container_name: 'chat-services'
-    build:
-      context: ./chat-services  # path to the chat-services directory
+  postgresdb:
+    image: postgres
+    container_name: 'postgresdb'
+    restart: always
+    environment:
+      - POSTGRES_DB=restdb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=dangerous
     ports:
-      - 8080:8080
+      - 5432:5432
     networks:
-        - micro_network
-    depends_on:
-      - postgresdb
-      - rabbitmq
+        - backend_network
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: dangerous
+    ports:
+      - "5050:80"
+    networks:
+        - backend_network
+  # redis:
+  #   image: redis:6.2-alpine
+  #   restart: always
+  #   ports:
+  #     - '6379:6379'
+  #   command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+  #   networks:
+  #       - micro_network
+
+  # chat-services:
+  #   image: chat-services:latest
+  #   container_name: 'chat-services'
+  #   build:
+  #     context: ./chat-services  # path to the chat-services directory
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #       - micro_network
+  #   depends_on:
+  #     - postgresdb
 
   user-services:
     image: user-services:latest
     container_name: 'user-services'
+    restart: always
     build:
       context: ./user-services  # path to the user-services directory
     ports:
-      - 8081:8081
+      - 8080:8080
     networks:
-        - micro_network
+        - backend_network
     depends_on:
-      - chat-services
+      - postgresdb
 
 networks:
-  micro_network:
+  backend_network:
+    driver: bridge
+  
