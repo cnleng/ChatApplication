@@ -16,6 +16,9 @@ Backend Java Chat Application
 
 
 ## High Level Design
+
+![Chat Server High Level Design](ChatServer.png)
+
 The Chat Application is made of two services.
 1- User Service: will handle all operations related to authentication, join and leave a chat group. This service will use a REST API. 
 All users infos are stored in a postgres dabatase. User Service endpoints has the follwing endpoints
@@ -36,9 +39,9 @@ User must always be authenticated to be able to call Chat Service endpoints. Use
 ### User Service endpoints
 
   ``` sh
-  POST /users/join, Join a group
+  POST /users/subscribe, Subscribe to a group
 
-  POST /users/leave, Leave a group
+  POST /users/unsuscribe, unsubscribe to a group
 
   POST /users/authenticate,  Authenticate to the Application
   ```

@@ -24,14 +24,12 @@ public class WebSocketConfiguration implements WebSocketConfigurer{
     @Qualifier("ChatMessageService")
     private MessageService service;
 
+    @Autowired
+    private ChatWebSocketHandler webSocketHandler;
+
     @Override
     public void registerWebSocketHandlers(@NonNull WebSocketHandlerRegistry registry) {
-        registry.addHandler(getChatWebSocketHandler(), "/chat");
-    }
-
-    @Bean
-    public WebSocketHandler getChatWebSocketHandler() {
-        return new ChatWebSocketHandler(service);
+        registry.addHandler(webSocketHandler, "/chat");
     }
 
 }

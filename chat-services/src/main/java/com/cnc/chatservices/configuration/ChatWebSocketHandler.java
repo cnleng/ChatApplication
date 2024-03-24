@@ -6,25 +6,25 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.cnc.chatservices.repositories.MessageRepository;
 import com.cnc.chatservices.services.MessageService;
 
+@Component
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ChatWebSocketHandler.class);
     private final Set<WebSocketSession> sessions = new HashSet<>();
+    @Autowired
+    @Qualifier("ChatMessageService")
     private MessageService service;
-
-    public ChatWebSocketHandler(MessageService service) {
-        super();
-        this.service = service;
-    }
 
     @Override
     public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception {
