@@ -1,16 +1,28 @@
 version: "3.9"
 
 services:
-  postgresdb:
-    image: postgres
-    container_name: 'postgresdb'
+  userpostgresdb:
+    image: postgres:16.2-alpine3.19
+    container_name: 'userpostgresdb'
     restart: always
     environment:
-      - POSTGRES_DB=restdb
+      - POSTGRES_DB=userdb
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=dangerous
     ports:
       - 5432:5432
+    networks:
+        - backend_network
+  chatpostgresdb:
+    image: postgres:16.2-alpine3.19
+    container_name: 'chatpostgresdb'
+    restart: always
+    environment:
+      - POSTGRES_DB=chatdb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=dangerous
+    ports:
+      - 5434:5432
     networks:
         - backend_network
   pgadmin:
@@ -56,7 +68,7 @@ services:
     networks:
         - backend_network
     depends_on:
-      - postgresdb
+      - userpostgresdb
 
 networks:
   backend_network:

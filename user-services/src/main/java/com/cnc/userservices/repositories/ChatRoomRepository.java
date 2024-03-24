@@ -3,8 +3,10 @@ package com.cnc.userservices.repositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository("ChatRoomRepository")
+@Transactional
 public class ChatRoomRepository implements RoomRepository {
 
     private static final String DELETE_USER_ROOM = "delete from user_rooms where user_id = ? AND room_id = ?";

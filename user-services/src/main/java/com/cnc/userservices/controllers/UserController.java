@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cnc.userservices.services.RoomService;
+import com.cnc.userservices.services.GroupService;
 
 @RestController
 @RequestMapping("/users")
@@ -21,34 +21,34 @@ public class UserController {
 
     @Autowired
     @Qualifier("ChatRoomService")
-    private RoomService roomService;
+    private GroupService roomService;
 
-    @PostMapping("/join")
+    @PostMapping("/subscribe")
     public ResponseEntity<ApiResponse> joinChatRoom(@RequestBody ChatRoomRequest request) {
         Long userId = request.getUserId();
         Long roomId = request.getRoomId();
         try {
-            boolean success = roomService.join(userId, roomId);
+            boolean success = roomService.subscribe(userId, roomId);
             ApiResponse response = new ChatRoomResponse(success);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            LOGGER.error("An error occurred while joining a chat room", e);
-            ApiResponse response = new ChatRoomResponse( "An error occurred while joining a chat room", e.getMessage(), false);
+            LOGGER.error("An error occurred while subscribing a chat room", e);
+            ApiResponse response = new ChatRoomResponse( "An error occurred while subscribing a chat room", e.getMessage(), false);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
-    @PostMapping("/leave")
+    @PostMapping("/unsuscribe")
     public ResponseEntity<ApiResponse> leaveChatRoom(@RequestBody ChatRoomRequest request) {
         Long userId = request.getUserId();
         Long roomId = request.getRoomId();
         try {
-            boolean success = roomService.leave(userId, roomId);
+            boolean success = roomService.unsuscribe(userId, roomId);
             ApiResponse response = new ChatRoomResponse(success);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            LOGGER.error("An error occurred while joining a chat room", e);
-            ApiResponse response = new ChatRoomResponse( "An error occurred while joining a chat room", e.getMessage(), false);
+            LOGGER.error("An error occurred while unsuscribing a chat room", e);
+            ApiResponse response = new ChatRoomResponse( "An error occurred while unsuscribing a chat room", e.getMessage(), false);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
