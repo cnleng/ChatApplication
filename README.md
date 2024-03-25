@@ -93,6 +93,10 @@ In this diagram, we have the assumption that:
    ``` sh
    cd ChatApplication
    docker-compose up --build -d
+
+   or
+
+   docker-compose up --build
    ```
 
    Test an API call using credentials admin/dangerous (hardcoded values)
