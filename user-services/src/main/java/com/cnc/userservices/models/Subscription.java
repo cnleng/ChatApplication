@@ -1,5 +1,7 @@
 package com.cnc.userservices.models;
 
-public class UserRoom {
+public class Subscription {
+
+    
 
 }

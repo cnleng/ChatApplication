@@ -21,7 +21,7 @@ public interface MessageRepository {
      * @param receiverId
      * @return
      */
-    List<ChatMessage> retrieve(Long senderId, Long receiverId);
+    List<ChatMessage> getMessagesByRoom(Long receiverId);
 
     /**
      * 

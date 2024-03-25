@@ -1,6 +1,8 @@
-package com.cnc.userservices.services;
+package com.cnc.userservices.messaging;
 
 import org.springframework.stereotype.Service;
+
+import com.cnc.userservices.exceptions.BrokerServiceException;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
@@ -8,13 +10,13 @@ import redis.clients.jedis.JedisPubSub;
 /**
  * 
  */
-@Service
+// @Service
 public class RedisPubSubService implements BrokerService {
 
     private Jedis jedis;
 
     @Override
-    public boolean subscribe(String channel) throws GroupServiceException {
+    public boolean subscribe(String channel) throws BrokerServiceException {
 
         try {
             this.jedis.subscribe(new JedisPubSub() {
@@ -25,19 +27,25 @@ public class RedisPubSubService implements BrokerService {
             }, channel);
             return true;
         } catch (Exception e) {
-            throw new GroupServiceException(e.getMessage());
+            throw new BrokerServiceException(e.getMessage());
         }
 
     }
 
     @Override
-    public boolean publish(String message) throws GroupServiceException {
+    public boolean publish(String channel, String message) throws BrokerServiceException {
         try {
-            this.jedis.publish(message, message);
+            this.jedis.publish(channel, message);
             return true;
         } catch (Exception e) {
-            throw new GroupServiceException(e.getMessage());
+            throw new BrokerServiceException(e.getMessage());
         }
     }
+
+	@Override
+	public boolean unsubscribe(String topic) throws BrokerServiceException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'unsuscribe'");
+	}
 
 }

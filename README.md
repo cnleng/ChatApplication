@@ -22,8 +22,8 @@ Backend Java Chat Application
 The Chat Application is made of two services.
 1- User Service: will handle all operations related to authentication, join and leave a chat group. This service will use a REST API. 
 All users infos are stored in a postgres dabatase. User Service endpoints has the follwing endpoints
-1.1 -  POST /join, Join a group
-1.2 -  POST /leave, Leave a group
+1.1 -  POST /subscribe, Join a group
+1.2 -  POST /unsuscribe, Leave a group
 1.3 -  POST /authenticate, Authenticate to the Application
 
 
@@ -32,7 +32,7 @@ This service will use a message broker to synch messages between users and chat 
 this service will store messages in postgres sql.
 User must always be authenticated to be able to call Chat Service endpoints. User Service endpoints has the following endpoints
 2.1 -  POST /send, send messages to the chat
-2.2 -  POST /receive, Retrieve all messages from a private or group discussion for a specified user
+2.2 -  GET /messages, Retrieve all messages from a private or group discussion for a specified user
 
 ## Application Endpoints
 

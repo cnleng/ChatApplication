@@ -16,11 +16,10 @@ public class ChatMessageRepository implements MessageRepository {
 
     private static final String DELETE_CHAT_MESSAGE = "delete from chat_messages where sender_id = ? AND id = ?";
     private static final String INSERT_CHAT_MESSAGE = "insert into chat_messages (sender_id, receiver_id, content) VALUES (?, ?, ?)";
-    private static final String RETRIEVE_USER_CHAT_MESSAGES = "select * from chat_messages where sender_id = %d AND receiver_id = %d";
+    private static final String RETRIEVE_USER_CHAT_MESSAGES = "select * from chat_messages where receiver_id = %d order by timestamp";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
 
     @Override
     public boolean save(ChatMessage message) {
@@ -33,8 +32,8 @@ public class ChatMessageRepository implements MessageRepository {
     }
 
     @Override
-    public List<ChatMessage> retrieve(Long senderId, Long receiverId) {
-        List<ChatMessage> messages = jdbcTemplate.query(String.format(RETRIEVE_USER_CHAT_MESSAGES, senderId, receiverId), new ChatMessageMapper());
+    public List<ChatMessage> getMessagesByRoom(Long receiverId) {
+        List<ChatMessage> messages = jdbcTemplate.query(String.format(RETRIEVE_USER_CHAT_MESSAGES, receiverId), new ChatMessageMapper());
         return messages;
     }
 

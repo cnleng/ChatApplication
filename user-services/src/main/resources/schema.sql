@@ -1,4 +1,8 @@
-CREATE TABLE users (
+DROP TABLE IF EXISTS subscriptions;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS rooms;
+
+CREATE TABLE IF NOT EXISTS  users (
     id SERIAL PRIMARY KEY,
     password_hash TEXT NOT NULL,
     username TEXT NOT NULL,
@@ -6,12 +10,13 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE rooms (
+CREATE TABLE IF NOT EXISTS rooms (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE
+    name VARCHAR(255) NOT NULL,
+    CONSTRAINT idx_name_unique UNIQUE (name)
 );
 
-CREATE TABLE user_rooms (
+CREATE TABLE IF NOT EXISTS subscriptions (
     user_id INTEGER NOT NULL,
     room_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

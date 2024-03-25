@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cnc.userservices.services.GroupService;
 
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -38,7 +39,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/unsuscribe")
+    @PostMapping("/unsubscribe")
     public ResponseEntity<ApiResponse> leaveChatRoom(@RequestBody ChatRoomRequest request) {
         Long userId = request.getUserId();
         Long roomId = request.getRoomId();

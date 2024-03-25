@@ -17,9 +17,11 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	// implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	// implementation 'redis.clients:jedis:3.7.0'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.postgresql:postgresql:42.7.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

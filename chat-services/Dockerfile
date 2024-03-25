@@ -19,8 +19,8 @@ FROM openjdk:17-jdk
 WORKDIR /app
 
 # Copy the built JAR file from the previous stage
-COPY --from=build /app/build/libs/broker-services-0.0.1.jar /app/broker-services.jar
+COPY --from=build /app/build/libs/chat-services-0.0.1.jar /app/chat-services.jar
 
 EXPOSE 8080
 # Set the startup command for the Spring Boot application
-CMD ["java", "-jar", "broker-services.jar"]
+CMD ["java", "-jar", "chat-services.jar"]

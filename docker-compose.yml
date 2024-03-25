@@ -13,6 +13,7 @@ services:
       - 5432:5432
     networks:
         - backend_network
+
   chatpostgresdb:
     image: postgres:16.2-alpine3.19
     container_name: 'chatpostgresdb'
@@ -25,6 +26,7 @@ services:
       - 5434:5432
     networks:
         - backend_network
+
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4
@@ -36,26 +38,42 @@ services:
       - "5050:80"
     networks:
         - backend_network
-  # redis:
-  #   image: redis:6.2-alpine
-  #   restart: always
-  #   ports:
-  #     - '6379:6379'
-  #   command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-  #   networks:
-  #       - micro_network
 
-  # chat-services:
-  #   image: chat-services:latest
-  #   container_name: 'chat-services'
-  #   build:
-  #     context: ./chat-services  # path to the chat-services directory
-  #   ports:
-  #     - 8080:8080
-  #   networks:
-  #       - micro_network
-  #   depends_on:
-  #     - postgresdb
+  redis:
+    container_name: redis_cache
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    # command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    networks:
+        - backend_network
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      REDIS_HOSTS: redis_cache
+      REDIS_HOST: redis_cache
+      REDIS_PORT: redis:6379
+      # REDIS_PASSWORD: ${REDIS_PASSWORD}
+      HTTP_USER: root
+      HTTP_PASSWORD: root
+    ports:
+      - 8081:8081
+    networks:
+      - backend_network
+      
+  chat-services:
+    image: chat-services:latest
+    container_name: 'chat-services'
+    build:
+      context: ./chat-services  # path to the chat-services directory
+    ports:
+      - 8082:8080
+    networks:
+        - backend_network
+    depends_on:
+      - chatpostgresdb
 
   user-services:
     image: user-services:latest
