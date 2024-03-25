@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cnc.chatservices.exceptions.MessageServiceException;
 import com.cnc.chatservices.model.ChatMessage;
 import com.cnc.chatservices.repositories.MessageRepository;
+import com.cnc.chatservices.utils.Constants.MessageType;
 
 @Service("ChatMessageService")
 public class ChatMessageService implements MessageService {
@@ -22,9 +23,9 @@ public class ChatMessageService implements MessageService {
 	private MessageRepository repository;
 
 	@Override
-	public boolean save(Long userId, Long roomId, String content) throws MessageServiceException {
+	public boolean save(Long userId, Long roomId, String content, MessageType messageType) throws MessageServiceException {
 		try {
-			ChatMessage message = new ChatMessage(userId, roomId, content);
+			ChatMessage message = new ChatMessage(userId, roomId, content, messageType);
 			return repository.save(message);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -37,6 +38,16 @@ public class ChatMessageService implements MessageService {
 		try {
 			List<ChatMessage> messages = repository.getMessagesByRoom(roomId);
 			return messages;
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			throw new MessageServiceException(e.getMessage());
+		}
+	}
+
+	@Override
+	public boolean deleteMessage(Long id) throws MessageServiceException {
+		try {
+			return repository.delete(id);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			throw new MessageServiceException(e.getMessage());

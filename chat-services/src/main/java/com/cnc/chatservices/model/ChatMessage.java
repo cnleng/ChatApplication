@@ -2,6 +2,8 @@ package com.cnc.chatservices.model;
 
 import java.time.LocalDateTime;
 
+import com.cnc.chatservices.utils.Constants.MessageType;
+
 /**
  * 
  */
@@ -10,22 +12,25 @@ public class ChatMessage {
     private Long senderId;
     private Long receiverId;
     private String content;
+    private MessageType messageType;
     private LocalDateTime timestamp;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(Long senderId, Long receiverId, String content) {
+    public ChatMessage(Long senderId, Long receiverId, String content, MessageType messageType) {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.content = content;
+        this.messageType = messageType;
     }
 
-    public ChatMessage(Long id, Long senderId, Long receiverId, String content, LocalDateTime timestamp) {
+    public ChatMessage(Long id, Long senderId, Long receiverId, String content, MessageType messageType, LocalDateTime timestamp) {
         this.id = id;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.content = content;
+        this.messageType = messageType;
         this.timestamp = timestamp;
     }
 
@@ -60,5 +65,12 @@ public class ChatMessage {
         this.timestamp = timestamp;
     }
 
-    
+    public MessageType getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
+    }
+
 }

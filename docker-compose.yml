@@ -27,41 +27,14 @@ services:
     networks:
         - backend_network
 
-  pgadmin:
-    container_name: pgadmin4_container
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: dangerous
-    ports:
-      - "5050:80"
-    networks:
-        - backend_network
-
   redis:
     container_name: redis_cache
     image: redis:6.2-alpine
     restart: always
     ports:
       - '6379:6379'
-    # command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     networks:
         - backend_network
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    restart: always
-    environment:
-      REDIS_HOSTS: redis_cache
-      REDIS_HOST: redis_cache
-      REDIS_PORT: redis:6379
-      # REDIS_PASSWORD: ${REDIS_PASSWORD}
-      HTTP_USER: root
-      HTTP_PASSWORD: root
-    ports:
-      - 8081:8081
-    networks:
-      - backend_network
       
   chat-services:
     image: chat-services:latest

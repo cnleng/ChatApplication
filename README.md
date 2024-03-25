@@ -6,33 +6,53 @@ Backend Java Chat Application
 
    OS: MacOS or Ubuntu 21.04
 
-   Project built using Java 17, Gradle 8.5
+   Project implemented using Java 17, Gradle 8.5
 
-   Docker version 20.10.21
+   Docker version 20.10.21 (pre-installed)
 
-   Docker Compose version 2.14.0
+   Docker Compose version 2.14.0 (pre-installed)
 
-   We use postgresql as our database storage
+   We use Postgresql, Redis as data storage
 
 
 ## High Level Design
 
 ![Chat Server High Level Design](ChatServer.png)
 
-The Chat Application is made of two services.
-1- User Service: will handle all operations related to authentication, join and leave a chat group. This service will use a REST API. 
+
+### REST API
+The Chat Application is made of two microservices. Although we mention another service it will be ignored to simplify the implementation and focus on the mandatory requirements.
+
+* User Service: will handle all operations related to authentication, join and leave a chat group. This service will use a REST API. 
 All users infos are stored in a postgres dabatase. User Service endpoints has the follwing endpoints
-1.1 -  POST /subscribe, Join a group
-1.2 -  POST /unsuscribe, Leave a group
-1.3 -  POST /authenticate, Authenticate to the Application
+
+** - POST /users/subscribe, Join a group
+** - POST /users/unsubscribe, Leave a group
 
 
-2 - Chat Service: will handle all send and receive messages. This service will use a REST API. 
+* Chat Service: will handle all send and receive messages. This service will use a REST API. 
 This service will use a message broker to synch messages between users and chat groups
 this service will store messages in postgres sql.
 User must always be authenticated to be able to call Chat Service endpoints. User Service endpoints has the following endpoints
-2.1 -  POST /send, send messages to the chat
-2.2 -  GET /messages, Retrieve all messages from a private or group discussion for a specified user
+
+** -  POST /send, send messages to the chat
+** -  GET /messages, Retrieve all messages from a private or group discussion for a specified user
+** -  DELETE /messages/{id}, delete a message by a user
+
+### WebSocket Services
+
+![Web Socket Design and Flow](WebSocketFlow.png)
+
+In this diagram, we have the assumption that:
+* user 1, user 3 & user 4 are in teh same chat room
+* user 2, user 4, user 5 & user 6 are in teh same chat room
+
+* when user 1  sends a message, the message is send to teh web socket server for user 1
+* The message is published to room 1 channel that is shared between user 1 , user 3 & user 4
+* Redis pub/sub will broadcast the message to all subscribers. In this case, the web socket connection handlers that holdsconnection for user 3 & user 4
+
+## Assumptions
+
 
 ## Application Endpoints
 
@@ -43,16 +63,15 @@ User must always be authenticated to be able to call Chat Service endpoints. Use
 
   POST /users/unsuscribe, unsubscribe to a group
 
-  POST /users/authenticate,  Authenticate to the Application
   ```
 
   
 ### Chat Service endpoints
   
   ``` sh
-   POST /chat/send, send a message a private or group discussion
+   POST /api/chat/send, send a message a private or group discussion
   
-   GET /chat/receive, Retrieve all messages from a private or group discussion
+   GET /api/chat/messages/{roomId}, Retrieve all messages from a room using the room id
    ```
 
 
@@ -61,23 +80,28 @@ User must always be authenticated to be able to call Chat Service endpoints. Use
    Clone the project
    ``` sh
    git clone https://github.com/cnleng/ChatApplication.git
-   cd ChatApplication
+   ```
+
+   Install docker & docker-compose MacOS (Using brew)
+   ``` sh
+   brew install docker
+   brew install docker-compose
    ```
 
    Build and deploy project from command line using docker compose & docker
    ``` sh
+   cd ChatApplication
    docker-compose up --build -d
    ```
+
    Tear down the project from command line using docker compose & docker
    ``` sh
    docker-compose down
    ```
 
+## Room for Improvement
 
-
-
-   ``` sh
-      cd microservices/
-   
-      docker-compose up -d 
-   ```
+* Complete WebSocket implementation
+* Complete Unit tests
+* Replace Postgres database with nosql database in Chat Services for scalabilty
+* Externalize properties file used by both services and docker-compose file (Deployment will be more flexible) 

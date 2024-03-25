@@ -28,16 +28,13 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(@NonNull WebSocketSession session) throws Exception {
+        // TODO : WebSocket support for real-time chat communication instead of REST API.
         LOGGER.info("User " + session.getId() + " joins the group");
         sessions.add(session);
     }
 
     @Override
     public void handleTextMessage(@NonNull WebSocketSession session, @NonNull TextMessage message) throws Exception {
-        LOGGER.info("Headers");
-        Map<String, String> headers = session.getHandshakeHeaders().toSingleValueMap();
-        headers.forEach((k, v) -> LOGGER.info((k + ":" + v)));
-        service.save(1L, 1L, message.toString());
         for (WebSocketSession s : sessions) {
             s.sendMessage(message);
         }

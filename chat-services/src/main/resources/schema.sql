@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS chat_messages (
     sender_id INTEGER NOT NULL,
     receiver_id INTEGER NOT NULL,
     content TEXT NOT NULL,
+    message_type TEXT NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+import com.cnc.chatservices.utils.Constants.MessageType;
+
 public class ChatMessageMapper implements RowMapper<ChatMessage>{
 
     @Override
@@ -20,6 +22,7 @@ public class ChatMessageMapper implements RowMapper<ChatMessage>{
 		message.setSenderId(rs.getLong("sender_id"));
 		message.setReceiverId(rs.getLong("receiver_id"));
 		message.setContent(rs.getString("content"));
+		message.setMessageType(MessageType.valueOf(rs.getString("message_type")));
         Instant instant = Instant.ofEpochMilli(rs.getTimestamp("timestamp").getTime());
         message.setTimestamp(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
 		return message;

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ChatServicesApplicationTests {
 
+	// TODO: Implements Unit tests
 	@Test
 	void contextLoads() {
 		assertEquals(true, true);

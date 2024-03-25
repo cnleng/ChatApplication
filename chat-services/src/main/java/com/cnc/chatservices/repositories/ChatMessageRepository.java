@@ -14,8 +14,8 @@ import com.cnc.chatservices.model.ChatMessageMapper;
 @Transactional
 public class ChatMessageRepository implements MessageRepository {
 
-    private static final String DELETE_CHAT_MESSAGE = "delete from chat_messages where sender_id = ? AND id = ?";
-    private static final String INSERT_CHAT_MESSAGE = "insert into chat_messages (sender_id, receiver_id, content) VALUES (?, ?, ?)";
+    private static final String DELETE_CHAT_MESSAGE = "update chat_messages set message_type = 'DELETED' where id = ?";
+    private static final String INSERT_CHAT_MESSAGE = "insert into chat_messages (sender_id, receiver_id, content, message_type) VALUES (?, ?, ?, ?)";
     private static final String RETRIEVE_USER_CHAT_MESSAGES = "select * from chat_messages where receiver_id = %d order by timestamp";
 
     @Autowired
@@ -23,7 +23,7 @@ public class ChatMessageRepository implements MessageRepository {
 
     @Override
     public boolean save(ChatMessage message) {
-        return jdbcTemplate.update(INSERT_CHAT_MESSAGE, message.getSenderId(), message.getReceiverId(), message.getContent()) > 0;
+        return jdbcTemplate.update(INSERT_CHAT_MESSAGE, message.getSenderId(), message.getReceiverId(), message.getContent(), message.getMessageType().toString()) > 0;
     }
 
     @Override
