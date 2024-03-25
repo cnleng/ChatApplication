@@ -94,6 +94,16 @@ In this diagram, we have the assumption that:
    docker-compose up --build -d
    ```
 
+   Test an API call using credentials admin/dangerous (hardcoded values)
+      ``` sh
+         curl --location 'http://localhost:8082/api/chat/messages/1' \
+      --header 'Authorization: Basic YWRtaW46ZGFuZ2Vyb3Vz' \
+      --header 'Cookie: JSESSIONID=2FE59B262BE8AFB8AB2B8461F2052DAA' \
+      --data '' \
+      -u admin:dangerous
+   ```
+
+
    Tear down the project from command line using docker compose & docker
    ``` sh
    docker-compose down
@@ -102,6 +112,9 @@ In this diagram, we have the assumption that:
 ## Room for Improvement
 
 * Complete WebSocket implementation
+* Implement a gateway service to handle authentication
+* authentication must not use hard coded values
+* API authentication
 * Complete Unit tests
 * Replace Postgres database with nosql database in Chat Services for scalabilty
 * Externalize properties file used by both services and docker-compose file (Deployment will be more flexible) 
