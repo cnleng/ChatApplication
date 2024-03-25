@@ -27,6 +27,7 @@ The Chat Application is made of two microservices. Although we mention another s
 All users infos are stored in a postgres dabatase. User Service endpoints has the follwing endpoints
 
 *** POST /users/subscribe, Join a group
+
 ***  POST /users/unsubscribe, Leave a group
 
 
@@ -36,7 +37,9 @@ this service will store messages in postgres sql.
 User must always be authenticated to be able to call Chat Service endpoints. User Service endpoints has the following endpoints
 
 ***   POST /send, send messages to the chat
+
 ***   GET /messages, Retrieve all messages from a private or group discussion for a specified user
+
 ***   DELETE /messages/{id}, delete a message by a user
 
 ### WebSocket Services
