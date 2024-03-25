@@ -96,12 +96,8 @@ In this diagram, we have the assumption that:
    ```
 
    Test an API call using credentials admin/dangerous (hardcoded values)
-      ``` sh
-         curl --location 'http://localhost:8082/api/chat/messages/1' \
-      --header 'Authorization: Basic YWRtaW46ZGFuZ2Vyb3Vz' \
-      --header 'Cookie: JSESSIONID=2FE59B262BE8AFB8AB2B8461F2052DAA' \
-      --data '' \
-      -u admin:dangerous
+   ``` sh
+         curl --location 'http://localhost:8082/api/chat/messages/1'  --data ''  -u admin:dangerous
    ```
 
 
