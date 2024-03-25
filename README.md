@@ -26,8 +26,8 @@ The Chat Application is made of two microservices. Although we mention another s
 * User Service: will handle all operations related to authentication, join and leave a chat group. This service will use a REST API. 
 All users infos are stored in a postgres dabatase. User Service endpoints has the follwing endpoints
 
-** - POST /users/subscribe, Join a group
-** - POST /users/unsubscribe, Leave a group
+**  POST /users/subscribe, Join a group
+**  POST /users/unsubscribe, Leave a group
 
 
 * Chat Service: will handle all send and receive messages. This service will use a REST API. 
@@ -35,9 +35,9 @@ This service will use a message broker to synch messages between users and chat 
 this service will store messages in postgres sql.
 User must always be authenticated to be able to call Chat Service endpoints. User Service endpoints has the following endpoints
 
-** -  POST /send, send messages to the chat
-** -  GET /messages, Retrieve all messages from a private or group discussion for a specified user
-** -  DELETE /messages/{id}, delete a message by a user
+**   POST /send, send messages to the chat
+**   GET /messages, Retrieve all messages from a private or group discussion for a specified user
+**   DELETE /messages/{id}, delete a message by a user
 
 ### WebSocket Services
 
@@ -50,8 +50,6 @@ In this diagram, we have the assumption that:
 * when user 1  sends a message, the message is send to teh web socket server for user 1
 * The message is published to room 1 channel that is shared between user 1 , user 3 & user 4
 * Redis pub/sub will broadcast the message to all subscribers. In this case, the web socket connection handlers that holdsconnection for user 3 & user 4
-
-## Assumptions
 
 
 ## Application Endpoints
