@@ -88,7 +88,7 @@ In this diagram, we have the assumption that:
    brew install docker-compose
    ```
 
-   Build and deploy project from command line using docker compose & docker
+   Build and deploy project from command line using docker compose & docker. Make sure that ports 8080, 8082, 6379, 5432 are not in used.
    ``` sh
    cd ChatApplication
    docker-compose up --build -d
